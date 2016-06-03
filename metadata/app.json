@@ -1,0 +1,69 @@
+{
+   "name": "phonebook",
+   "api_url": "http://kazoo.allip.ovh:8000/v2",
+   "source_url": "http://kazoo.allip.ovh/apps/phonebook",
+   "i18n": {
+       "en-US": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "ro-RO": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "ru-RU": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "nl-NL": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "de-DE": {
+           "label": "Telefonbuch",
+           "description": "Einrichten und verwalten Ihres Telefonbuchs für Ihre Kunden und Liefereranten.",
+           "extended_description": "Sie können die Telefonbuch einpflegen und verändern.",
+           "features": [ "Einzelne Einträge erstellen und anpassen", "Kurzwahl einstellen", "Blocklisten verwalten", "In- Export per csv" ]
+       },
+       "it-IT": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "fr-FR": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "es-ES": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       },
+       "zh-CN": {
+           "label": "Phonebook",
+           "description": "Set up and manage phonebook for your customers and suppliers.",
+           "extended_description": "You can setup and manage your phonebook per web.",
+           "features": [ "rateentry per web manage", "create new phonebook per csv upload" ]
+       }
+   },
+   "tags": [ "carrier", "reseller", "all" ],
+   "author": "ALLIP.ovh",
+   "version": "1.0",
+   "license": "MPL",
+   "price": "2.00",
+   "icon": "phonebook_app.png",
+   "screenshots": [ "phonebook_1.png", "phonebook_2.png" ],
+   "pvt_type": "app"
+}

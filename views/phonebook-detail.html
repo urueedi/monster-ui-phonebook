@@ -1,0 +1,100 @@
+<div id="phonebook_detail_dialog">
+	<div class="general-info">
+		<h3>{{i18n.phonebookDetail.connectivityTitle}}</h3>
+
+		<div class="sub-title">
+			{{i18n.phonebookDetail.connectivityDescription}}
+		</div>
+
+		<div class="connectivity-info">
+			<div class="info-block device-block">
+				<i class="connectivity-icon fa fa-phone fa-4x"></i>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.sipUser}}:</span>
+					<span class="value">{{ metadata.username }}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.account}}:</span>
+					<span class="value">{{ metadata.account_name }}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.domain}}:</span>
+					<span class="value">{{ metadata.realm }}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.type}}:</span>
+					<span class="value">{{ metadata.user_agent }}</span>
+				</div>
+			</div>
+			<div class="info-block cloud-block">
+				<i class="connectivity-arrow fa fa-long-arrow-right fa-4x"></i>
+				<i class="connectivity-icon fa fa-cloud fa-4x"></i>
+				<i class="connectivity-arrow fa fa-long-arrow-right fa-4x"></i>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.connectedVia}}</span>
+					<span class="value">{{ metadata.contact_ip }}:{{ metadata.contact_port }}</span>
+				</div>
+				{{#if provider_data}}
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.from}}</span>
+					<span class="value">{{provider_data.location}}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.via}}</span>
+					<span class="value"><a href="{{provider_data.website}}">{{provider_data.isp_name}}</a> <a href="{{provider_data.map_link}}">({{i18n.phonebookDetail.map}})</a></span>
+				</div>
+				{{/if}}
+			</div>
+			<div class="info-block server-block">
+				<i class="connectivity-icon fa fa-laptop fa-4x"></i>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.proxyServer}}</span>
+					<span class="value">{{ metadata.proxy_ip }}:{{ metadata.proxy_port }}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.registerTime}}</span>
+					<span class="value">{{ metadata.expires }} {{i18n.phonebookDetail.seconds}}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.notifyDeregister}}</span>
+					<span class="value">
+					{{#if metadata.suppress_unregister_notify}}
+						{{i18n.phonebookDetail.no}}
+					{{else}}
+						{{i18n.phonebookDetail.yes}}
+					{{/if}}
+					</span>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+	<a href="javascript:void(0);" class="technical-details monster-link blue">{{i18n.phonebookDetail.showDetails}}</a>
+	<a href="javascript:void(0);" class="technical-details-hide monster-link blue">{{i18n.phonebookDetail.hideDetails}}</a>
+
+	<div class="technical-data">
+		<h3>{{i18n.phonebookDetail.technicalDetails}}</h3>
+
+		<table class="monster-details-table technical-data-table">
+			<thead>
+				<tr>
+					<td>{{i18n.phonebookDetail.key}}</td>
+					<td>{{i18n.phonebookDetail.value}}</td>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each metadata}}
+				<tr>
+					<td>{{ @key }}</td>
+					<td>{{ this }} </td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="action-bar dialog-buttons-wrapper">
+		<button id="close" class="monster-button">{{ i18n.close }}</button>
+	</div>
+</div>

@@ -1,0 +1,111 @@
+{
+	"menuTitles": {
+		"registrations": "Registrations",
+		"smtpLogs": "SMTP Logs",
+                "callInspector": "Call Inspector",
+                "presence": "Presence"
+	},
+
+	"registrations": {
+		"title": "Registrations",
+		"tableTitles": {
+			"username": "Nom d'utilisateur",
+			"ip": "IP",
+			"port": "Port",
+			"date": "Date",
+			"details": "Détails"
+		},
+		"detailDialog": {
+			"popupTitle": "Information sur la Registration"
+		}
+	},
+
+	"registrationDetail" : {
+		"connectivityTitle" : "Information de Connexion",
+		"connectivityDescription" : "Ceci explique comment l'appareil est connecté au système.",
+		"sipUser" : "Utilisateur SIP",
+		"account" : "Compte",
+		"domain" : "Domaine/Royaume",
+		"type" : "Type",
+		
+		"connectedVia" : "Connecté via",
+		"port" : "port",
+		"from" : "Depuis",
+		"via" : "via",
+		"map" : "map",
+		
+		"proxyServer" : "Connecté au serveur",
+		"registerTime" : "Check-in programmé toutes les",
+		"seconds" : "secondes",
+		"notifyDeregister" : "Notifie un admin en cas de perte de connexion",
+		"yes" : "Oui",
+		"no" : "Non",
+		
+		"technicalDetails" : "Détails Techniques",
+		"showDetails" : "Montrer plus de détails...",
+		"hideDetails": "Cacher les détails avancés...",
+
+		"key": "Clé",
+		"value": "Valeur"
+	},
+
+	"smtpLogs": {
+		"title": "SMTP Logs",
+		"tableTitles": {
+			"from": "De",
+			"to": "À",
+			"date": "Date",
+			"details": "Détails",
+			"status": "Statut"
+		},
+		"detailDialog": {
+			"popupTitle": "Détails Techniques",
+			"metadataTitle": "Metadata",
+			"errorTitle": "Erreur(s)",
+			"apiKeys": {
+			}
+		}
+	},
+
+        "callInspector": {
+        "title": "Call Inspector",
+        "gridHeaders": {
+                "inboundCall": "Inbound",
+                "outboundCall": "Outbound",
+                "dateTime1": "Date/Time",
+                "from": "From",
+                "to": "To",
+                "duration1": "Duration",
+                "duration2": "(Min)",
+                "hangup1": "Hangup",
+                "hangup2": "Cause",
+                "see": "See",
+                "ladder": "Ladder"
+        },
+        "loaderMessage": "Scroll down or click here to load additional calls.",
+        "loadingMessage": "Loading additional calls...",
+        "noSearchMatch": "You search criteria did not match any call.",
+        "backButton": "Back",
+        "analysisTypes": {
+                "user": "User",
+                "carrier": "Carrier",
+                "kazoo": "Kazoo",
+                "cloud": ""
+        }
+    },
+                
+    "presence": {
+        "title": "Presence",
+        "tableTitles": {
+                "subscription": "Subscription",
+                "type": "Type",
+                "mwi": "MWI",
+                "blf": "BLF",
+                "presence": "PR",
+                "subscribersCount": "Subscribers",
+                "flush": "Flush"
+        },
+        "flushSent": "You successfully triggered a reset command on extension {{variable}}"
+    }
+
+}

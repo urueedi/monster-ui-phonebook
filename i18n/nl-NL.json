@@ -1,0 +1,109 @@
+{
+	"menuTitles": {
+		"registrations": "registraties",
+                "smtpLogs": "SMTP Logs",
+                "callInspector": "Call Inspector",
+                "presence": "Presence"	},
+
+	"registrations": {
+		"title": "registraties",
+		"tableTitles": {
+			"username": "gebruikersnaam",
+			"ip": "ip",
+			"port": "port",
+			"date": "datum",
+			"details": "meer informatie"
+		},
+		"detailDialog": {
+			"popupTitle": "connectiviteit apparaatgegevens"
+		}
+	},
+	
+	"registrationDetail" : {
+		"connectivityTitle" : "connectiviteit informatie",
+		"connectivityDescription" : "Deze informatie laat zien hoe uw toestel is verbonden met het netwerk.",
+		"sipUser" : "slok gebruiker",
+		"account" : "rekening",
+		"domain" : "domein/realm",
+		"type" : "type",
+		
+		"connectedVia" : "via",
+		"port" : "port",
+		"from" : "met ingang van",
+		"via" : "via",
+		"map" : "kaart",
+		
+		"proxyServer" : "verbonden server",
+		"registerTime" : "geplande check-in elk",
+		"seconds" : "seconden",
+		"notifyDeregister" : "melden admin als de verbinding verloren ?",
+		"yes" : "ja well",
+		"no" : "niet doen",
+		
+		"technicalDetails" : "technische details",
+		"showDetails" : "toon meer details...",
+		"hideDetails": "verbergen technische details...",
+                "key": "Key",
+                "value": "Value"
+        },
+
+        "smtpLogs": {
+                "title": "SMTP Logs",
+                "tableTitles": {
+                        "from": "From",
+                        "to": "To",
+                        "date": "Date",
+                        "details": "Details",
+                        "status": "Status"
+                },
+                "detailDialog": {
+                        "popupTitle": "Technical Details",
+                        "metadataTitle": "Metadata",
+                        "errorTitle": "Error(s)",
+                        "apiKeys": {
+                        }
+                }
+        },
+
+        "callInspector": {
+        "title": "Call Inspector",
+        "gridHeaders": {
+                "inboundCall": "Inbound",
+                "outboundCall": "Outbound",
+                "dateTime1": "Date/Time",
+                "from": "From",
+                "to": "To",
+                "duration1": "Duration",
+                "duration2": "(Min)",
+                "hangup1": "Hangup",
+                "hangup2": "Cause",
+                "see": "See",
+                "ladder": "Ladder"
+        },
+        "loaderMessage": "Scroll down or click here to load additional calls.",
+        "loadingMessage": "Loading additional calls...",
+        "noSearchMatch": "You search criteria did not match any call.",
+        "backButton": "Back",
+        "analysisTypes": {
+                "user": "User",
+                "carrier": "Carrier",
+                "kazoo": "Kazoo",
+                "cloud": ""
+        }
+    },
+                
+    "presence": {
+        "title": "Presence",
+        "tableTitles": {
+                "subscription": "Subscription",
+                "type": "Type",
+                "mwi": "MWI",
+                "blf": "BLF",
+                "presence": "PR",
+                "subscribersCount": "Subscribers",
+                "flush": "Flush"
+        },
+        "flushSent": "You successfully triggered a reset command on extension {{variable}}"
+    }
+
+}

@@ -1,0 +1,112 @@
+{
+	"menuTitles": {
+		"registrations": "Registrations",
+		"smtpLogs": "SMTP Logs",
+		"callInspector": "Call Inspector",
+		"presence": "Presence"
+	},
+
+	"registrations": {
+		"title": "Registrations",
+		"tableTitles": {
+			"username": "Username",
+			"ip": "IP",
+			"port": "Port",
+			"date": "Date",
+			"details": "Details",
+			"name": "Name",
+			"presenceId": "Presence ID"
+		},
+		"detailDialog": {
+			"popupTitle": "Device Connectivity Information"
+		}
+	},
+	
+	"registrationDetail" : {
+		"connectivityTitle" : "Connectivity Information",
+		"connectivityDescription" : "This information shows how your device is connected to the network.",
+		"sipUser" : "SIP User",
+		"account" : "Account",
+		"domain" : "Domain/Realm",
+		"type" : "Type",
+		
+		"connectedVia" : "Connected via",
+		"port" : "port",
+		"from" : "From",
+		"via" : "via",
+		"map" : "map",
+		
+		"proxyServer" : "Connected to server",
+		"registerTime" : "Scheduled check-in every",
+		"seconds" : "seconds",
+		"notifyDeregister" : "Notify admin if connection lost?",
+		"yes" : "Yes",
+		"no" : "No",
+		
+		"technicalDetails" : "Technical Details",
+		"showDetails" : "Show more details...",
+		"hideDetails": "Hide technical details...",
+
+		"key": "Key",
+		"value": "Value"
+	},
+
+	"smtpLogs": {
+		"title": "SMTP Logs",
+		"tableTitles": {
+			"from": "From",
+			"to": "To",
+			"date": "Date",
+			"details": "Details",
+			"status": "Status"
+		},
+		"detailDialog": {
+			"popupTitle": "Technical Details",
+			"metadataTitle": "Metadata",
+			"errorTitle": "Error(s)",
+			"apiKeys": {
+			}
+		}
+	},
+
+	"callInspector": {
+		"title": "Call Inspector",
+		"gridHeaders": {
+			"inboundCall": "Inbound",
+			"outboundCall": "Outbound",
+			"dateTime1": "Date/Time",
+			"from": "From",
+			"to": "To",
+			"duration1": "Duration",
+			"duration2": "(Min)",
+			"hangup1": "Hangup",
+			"hangup2": "Cause",
+                        "see": "See",
+                        "ladder": "Ladder"
+		},
+		"loaderMessage": "Scroll down or click here to load additional calls.",
+		"loadingMessage": "Loading additional calls...",
+		"noSearchMatch": "You search criteria did not match any call.",
+		"backButton": "Back",
+		"analysisTypes": {
+			"user": "User",
+			"carrier": "Carrier",
+			"kazoo": "Kazoo",
+			"cloud": ""
+		}
+	},
+
+	"presence": {
+		"title": "Presence",
+		"tableTitles": {
+			"subscription": "Subscription",
+			"type": "Type",
+            "mwi": "MWI",
+            "blf": "BLF",
+            "presence": "PR",
+			"subscribersCount": "Subscribers",
+			"flush": "Flush"
+		},
+		"flushSent": "You successfully triggered a reset command on extension {{variable}}"
+	}
+}

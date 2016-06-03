@@ -1,0 +1,110 @@
+{
+	"menuTitles": {
+		"registrations": "înregistrări",
+                "smtpLogs": "SMTP Logs",
+                "callInspector": "Call Inspector",
+                "presence": "Presence"
+	},
+
+	"registrations": {
+		"title": "înregistrări",
+		"tableTitles": {
+			"username": "numele de utilizator",
+			"ip": "ip",
+			"port": "port",
+			"date": "data",
+			"details": "detalii"
+		},
+		"detailDialog": {
+			"popupTitle": "Informații conectivitate dispozitiv"
+		}
+	},
+	
+	"registrationDetail" : {
+		"connectivityTitle" : "Informații conectivitate",
+		"connectivityDescription" : "această informație arată cum dispozitivul este conectat la rețea.",
+		"sipUser" : "utilizator SIP",
+		"account" : "cont",
+		"domain" : "Domeniul/tărâm",
+		"type" : "tip",
+		
+		"connectedVia" : "conectat prin",
+		"port" : "port",
+		"from" : "de la",
+		"via" : "prin",
+		"map" : "hartă",
+		
+		"proxyServer" : "conectat la serverul",
+		"registerTime" : "check -in programate în fiecare",
+		"seconds" : "secunde",
+		"notifyDeregister" : "notifica admin dacă conexiune pierdut ?",
+		"yes" : "da",
+		"no" : "nu face",
+		
+		"technicalDetails" : "detalii tehnice",
+		"showDetails" : "arată mai multe detalii...",
+		"hideDetails": "ascunde detalii tehnice...",
+                "key": "Key",
+                "value": "Value"
+        },
+
+        "smtpLogs": {
+                "title": "SMTP Logs",
+                "tableTitles": {
+                        "from": "From",
+                        "to": "To",
+                        "date": "Date",
+                        "details": "Details",
+                        "status": "Status"
+                },
+                "detailDialog": {
+                        "popupTitle": "Technical Details",
+                        "metadataTitle": "Metadata",
+                        "errorTitle": "Error(s)",
+                        "apiKeys": {
+                        }
+                }
+        },
+
+        "callInspector": {
+        "title": "Call Inspector",
+        "gridHeaders": {
+                "inboundCall": "Inbound",
+                "outboundCall": "Outbound",
+                "dateTime1": "Date/Time",
+                "from": "From",
+                "to": "To",
+                "duration1": "Duration",
+                "duration2": "(Min)",
+                "hangup1": "Hangup",
+                "hangup2": "Cause",
+                "see": "See",
+                "ladder": "Ladder"
+        },
+        "loaderMessage": "Scroll down or click here to load additional calls.",
+        "loadingMessage": "Loading additional calls...",
+        "noSearchMatch": "You search criteria did not match any call.",
+        "backButton": "Back",
+        "analysisTypes": {
+                "user": "User",
+                "carrier": "Carrier",
+                "kazoo": "Kazoo",
+                "cloud": ""
+        }
+    },
+                
+    "presence": {
+        "title": "Presence",
+        "tableTitles": {
+                "subscription": "Subscription",
+                "type": "Type",
+                "mwi": "MWI",
+                "blf": "BLF",
+                "presence": "PR",
+                "subscribersCount": "Subscribers",
+                "flush": "Flush"
+        },
+        "flushSent": "You successfully triggered a reset command on extension {{variable}}"
+    }
+
+}

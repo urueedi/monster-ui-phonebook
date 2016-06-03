@@ -1,0 +1,106 @@
+#phonebook_grid {
+	clear: right;
+}
+#phonebook_container .detail-link {
+	margin: 0;
+}
+#phonebook_detail_dialog {
+	width: 700px;
+	padding: 15px;
+}
+#phonebook_detail_dialog .sub-title {
+	padding-bottom: 20px;
+}
+#phonebook_detail_dialog .general-info {
+	padding-bottom: 20px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block {
+	font-size: 12px;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	width: 240px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block {
+	width: 220px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block i {
+	color: #606069;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.device-block .connectivity-icon {
+	margin-left: 90px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-icon,
+#phonebook_detail_dialog .connectivity-info .info-block.server-block .connectivity-icon {
+	margin-left: 70px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-arrow {
+	position: absolute;
+	right: -20px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-arrow:first-of-type {
+	right: inherit;
+	left: -40px;
+}
+#phonebook_detail_dialog .connectivity-info .info-line {
+	display: flex;
+}
+#phonebook_detail_dialog .connectivity-info .info-line .title {
+	font-weight: 600;
+	text-align: right;
+	padding-right: 5px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.device-block .info-line .title {
+	min-width: 110px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .info-line .title {
+	min-width: 80px;
+}
+#phonebook_detail_dialog .connectivity-info .info-line .value {
+	text-align: left;
+	color: #0087e0;
+}
+#phonebook_detail_dialog .monster-link {
+	margin: 0;
+}
+#phonebook_detail_dialog .technical-data,
+#phonebook_detail_dialog .technical-details-hide {
+	display: none;
+}
+#phonebook_detail_dialog .action-bar {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: solid 1px #c0c0c9;
+}
+#speed_dial_container .table .detail-link {
+	margin: 0px;
+}
+#speed_dial_grid {
+	clear: right;
+}
+#speed_dial_detail_dialog {
+	width: 500px;
+	padding: 15px;
+}
+#speed_dial_detail_dialog tr,
+#speed_dial_detail_dialog td {
+	line-height: 15px;
+	padding: 2px;
+	white-space: normal;
+}
+#blacklist_grid {
+	clear: right;
+}
+#phonebook_container .left-menu > div {
+	margin-top: 10px;
+}
+button.monster-button-secondary.apply-filter {
+        min-width: inherit;
+}
+table.table tr > td {
+    line-height: 30px;
+    max-width: 70px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

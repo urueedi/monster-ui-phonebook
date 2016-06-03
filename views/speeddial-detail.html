@@ -1,0 +1,30 @@
+<div id="smtp_logs_detail_dialog">
+	<h3>{{ i18n.speeddial.detailDialog.metadataTitle }}</h3>
+	
+	<table class="table table-striped technical-data-table">
+		<tbody>
+			{{#each metadata}}
+			<tr>
+				<td>{{ this.friendlyKey }}</td>
+				<td>{{ this.value }} </td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+
+	<h3>{{ i18n.speeddial.detailDialog.errorTitle }}</h3>
+
+	<table class="table table-striped error-data-table">
+		<tbody>
+			{{#each errors}}
+			<tr>
+				<td>{{this}}</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+
+	<div class="dialog-buttons-wrapper">
+		<button id="close" class="btn btn-info">{{ i18n.close }}</button>
+	</div>
+</div>
