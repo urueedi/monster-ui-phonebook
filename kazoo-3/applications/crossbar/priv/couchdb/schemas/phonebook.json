@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-03/schema#",
+    "_id": "phonebook",
+    "description": "Defines a phonebook entry",
+    "name": "Phonebook",
+    "properties": {
+        "address": {
+            "description": "Friendly Address of the phonebook",
+            "name": "Address",
+            "required": false,
+            "type": "string"
+        },
+        "city": {
+            "description": "city of entry this phonebook",
+            "name": "City",
+            "required": false,
+            "type": "string"
+        },
+        "company": {
+            "company": "company name if is a company",
+            "name": "Company",
+            "required": false,
+            "type": "string"
+        },
+        "country": {
+            "description": "country of entry this phonebook",
+            "name": "Country",
+            "required": false,
+            "type": "string"
+        },
+        "email": {
+            "description": "email of entry this phonebook",
+            "name": "Email",
+            "required": false,
+            "type": "string"
+        },
+        "local": {
+            "description": "local of entry this phonebook",
+            "name": "Local",
+            "required": false,
+            "type": "string"
+        },
+        "name": {
+            "description": "Name of entry this phonebook",
+            "name": "Name",
+            "required": false,
+            "type": "string"
+        },
+        "zip": {
+            "description": "zip of entry this phonebook",
+            "name": "ZIP",
+            "required": false,
+            "type": "string"
+        }
+    },
+    "required": true,
+    "type": "object"
+}

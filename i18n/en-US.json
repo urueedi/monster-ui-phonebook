@@ -17,35 +17,21 @@
                         "details": "Details"
 		},
 		"detailDialog": {
-			"popupTitle": "Device Connectivity Information"
+			"popupTitle": "Edit phonebook entry"
 		}
 	},
 	
 	"phonebookDetail" : {
-		"connectivityTitle" : "Connectivity Information",
-		"connectivityDescription" : "This information shows how your device is connected to the network.",
-		"sipUser" : "SIP User",
-		"account" : "Account",
-		"domain" : "Domain/Realm",
-		"type" : "Type",
-		
-		"connectedVia" : "Connected via",
-		"port" : "port",
-		"from" : "From",
-		"via" : "via",
-		"map" : "map",
-		
-		"proxyServer" : "Connected to server",
-		"registerTime" : "Scheduled check-in every",
-		"seconds" : "seconds",
-		"notifyDeregister" : "Notify admin if connection lost?",
+		"connectivityTitle" : "Edit phonebook entry",
+		"country": "Country",
+		"name": "Name",
+		"address" : "Address",
+		"zip" : "ZIP",
+		"city" : "City",
+		"local" : "Location",
+		"email" : "Email",
 		"yes" : "Yes",
 		"no" : "No",
-		
-		"technicalDetails" : "Technical Details",
-		"showDetails" : "Show more details...",
-		"hideDetails": "Hide technical details...",
-
 		"key": "Key",
 		"value": "Value"
 	},

@@ -17,34 +17,21 @@
 			"details": "Einzelheiten"
 		},
 		"detailDialog": {
-			"popupTitle": "Geräteinformationen"
+			"popupTitle": "Telefonbucheintrag ändern"
 		}
 	},
 	
 	"phonebookDetail" : {
-		"connectivityTitle" : "Verbindungsinformationen",
-		"connectivityDescription" : "Diese Information zeigt, wie das Gerät mit dem Netzwerk verbunden.",
-		"sipUser" : "SIP-Benutzer",
-		"account" : "Konto",
-		"domain" : "Domäne/Realm",
-		"type" : "Art",
-		
-		"connectedVia" : "Verbunden zu",
-		"port" : "Port",
-		"from" : "von",
-		"via" : "über",
-		"map" : "Karte",
-		
-		"proxyServer" : "Proxy Server",
-		"registerTime" : "phonebook alle",
-		"seconds" : "Sekunden",
-		"notifyDeregister" : "Ausfall benachrichtigen:",
-		"yes" : "ja",
-		"no" : "nein",
-		
-		"technicalDetails" : "Technische Details",
-		"showDetails" : "Zeige mehr Details...",
-		"hideDetails": "Weniger Details...",
+		"connectivityTitle" : "Eintrag ändern",
+                "country": "Land",
+                "name": "Name",
+                "address" : "Adresse",
+                "zip" : "PLZ",
+                "city" : "Ort",
+                "local" : "Standort",
+                "email" : "Email",
+                "yes" : "Ja",
+                "no" : "Nein",
                 "key": "Schlüssel",
                 "value": "Wert"
         },

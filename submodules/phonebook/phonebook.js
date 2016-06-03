@@ -24,20 +24,18 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                 var self = this;
                 container.on("click", ".detail-link", function() {
                     var data = $(this),
-                        row = container.data("row"),
-                        s = container.appFlags.tableData[row][5],
-                        o = $(monster.template(container, "phonebook-detail", {
+                        row = data.context.dataset.row,
+                        s = self.appFlags.tableData[row][5],
+                        detail = $(monster.template(self, "phonebook-detail", {
                             metadata: s
                         }));
-console.log(row);
-                    o.find("#close").on("click", function() {
-                        u.dialog("close").remove()
-                    }), o.find(".book-details").on("click", function() {
-                        o.find(".book-data, .book-details-hide").show(), o.find(".book-details").hide()
-                    }), o.find(".book-details-hide").on("click", function() {
-                        o.find(".book-details").show(), o.find(".book-data, .book-details-hide").hide()
+                    detail.find("#close").on("click", function() {
+                        edit.dialog("close").remove()
+                    }), detail.find(".book-details-save").on("click", function() {
+
+                        detail.find(".book-data, .book-details-hide").show(), detail.find(".book-details").hide()
                     });
-                    var u = monster.ui.dialog(o, {
+                    var edit = monster.ui.dialog(detail, {
                         title: self.i18n.active().phonebook.detailDialog.popupTitle,
                         position: ["center", 20]
                     })
@@ -46,7 +44,10 @@ console.log(row);
             phonebookInitTable: function(template, func) {
                 var self = this,
                     table = [{
-                        sTitle: self.i18n.active().phonebook.tableTitles.country
+                        sTitle: self.i18n.active().phonebook.tableTitles.country,
+                        fnRender: function(table) {
+                            return '<image class="small flag" image="' + table.country + '"></image>'
+                        }
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.company
                     }, {
@@ -59,8 +60,9 @@ console.log(row);
                         sTitle: self.i18n.active().phonebook.tableTitles.city
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.details,
-                        fnRender: function(data) {
-                            return '<a href="#" class="detail-link monster-link blue" data-row="' + data.iDataRow + '"><i class="fa fa-eye"></i></a>'
+                        fnRender: function(table) {
+//console.log(table);
+                            return '<a href="#" class="detail-link monster-link blue" data-row="' + table.iDataRow + '" id="'+ table.aData[] +'"><i class="fa fa-eye"></i></a>'
                         }
                     }, {
                         bVisible: !1
@@ -89,7 +91,6 @@ console.log(row);
                     },
                     success: function(data) {
                         var ret = self.phonebookFormatDataTable(data.data);
-console.log(ret);
                         self.appFlags.tableData = ret, callback && callback(ret)
                     }
                 })

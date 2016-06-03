@@ -8,70 +8,43 @@
 
 		<div class="connectivity-info">
 			<div class="info-block device-block">
-				<i class="connectivity-icon fa fa-phone fa-4x"></i>
+				<i class="connectivity-icon fa fa-book fa-4x"></i>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.sipUser}}:</span>
-					<span class="value">{{ metadata.username }}</span>
+					<span class="title">{{i18n.phonebookDetail.id}}:</span>
+					<span class="value">{{ metadata.id }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.account}}:</span>
-					<span class="value">{{ metadata.account_name }}</span>
+					<span class="title">{{i18n.phonebookDetail.country}}:</span>
+					<span class="value">{{ metadata.country }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.domain}}:</span>
-					<span class="value">{{ metadata.realm }}</span>
+					<span class="title">{{i18n.phonebookDetail.name}}:</span>
+					<span class="value">{{ metadata.name }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.type}}:</span>
-					<span class="value">{{ metadata.user_agent }}</span>
-				</div>
-			</div>
-			<div class="info-block cloud-block">
-				<i class="connectivity-arrow fa fa-long-arrow-right fa-4x"></i>
-				<i class="connectivity-icon fa fa-cloud fa-4x"></i>
-				<i class="connectivity-arrow fa fa-long-arrow-right fa-4x"></i>
-				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.connectedVia}}</span>
-					<span class="value">{{ metadata.contact_ip }}:{{ metadata.contact_port }}</span>
-				</div>
-				{{#if provider_data}}
-				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.from}}</span>
-					<span class="value">{{provider_data.location}}</span>
+					<span class="title">{{i18n.phonebookDetail.address}}:</span>
+					<span class="value">{{ metadata.address }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.via}}</span>
-					<span class="value"><a href="{{provider_data.website}}">{{provider_data.isp_name}}</a> <a href="{{provider_data.map_link}}">({{i18n.phonebookDetail.map}})</a></span>
-				</div>
-				{{/if}}
-			</div>
-			<div class="info-block server-block">
-				<i class="connectivity-icon fa fa-laptop fa-4x"></i>
-				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.proxyServer}}</span>
-					<span class="value">{{ metadata.proxy_ip }}:{{ metadata.proxy_port }}</span>
+					<span class="title">{{i18n.phonebookDetail.zip}}:</span>
+					<span class="value">{{ metadata.zip }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.registerTime}}</span>
-					<span class="value">{{ metadata.expires }} {{i18n.phonebookDetail.seconds}}</span>
+					<span class="title">{{i18n.phonebookDetail.city}}:</span>
+					<span class="value">{{ metadata.city }}</span>
 				</div>
 				<div class="info-line">
-					<span class="title">{{i18n.phonebookDetail.notifyDeregister}}</span>
-					<span class="value">
-					{{#if metadata.suppress_unregister_notify}}
-						{{i18n.phonebookDetail.no}}
-					{{else}}
-						{{i18n.phonebookDetail.yes}}
-					{{/if}}
-					</span>
+					<span class="title">{{i18n.phonebookDetail.local}}:</span>
+					<span class="value">{{ metadata.local }}</span>
+				</div>
+				<div class="info-line">
+					<span class="title">{{i18n.phonebookDetail.email}}:</span>
+					<span class="value">{{ metadata.email }}</span>
 				</div>
 			</div>
 		</div>
 		
 	</div>
-
-	<a href="javascript:void(0);" class="technical-details monster-link blue">{{i18n.phonebookDetail.showDetails}}</a>
-	<a href="javascript:void(0);" class="technical-details-hide monster-link blue">{{i18n.phonebookDetail.hideDetails}}</a>
 
 	<div class="technical-data">
 		<h3>{{i18n.phonebookDetail.technicalDetails}}</h3>

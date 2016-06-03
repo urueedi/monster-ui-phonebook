@@ -1,0 +1,20 @@
+{
+    "_id": "_design/phonebook",
+    "language": "javascript",
+    "views": {
+        "crossbar_deleted": {
+            "map": "function(doc) { if (doc.pvt_deleted == 'false' || doc.pvt_type !== 'phonebook') return; emit(parseInt(doc.prefix), null); }"
+        },
+        "crossbar_listing": {
+            "map": "function(doc) {\n  emit(doc._id, doc);\n}"
+        },
+        "group_by_isocode": {
+            "map": "function(doc) { if (doc.pvt_deleted || doc.pvt_type !== 'phonebook') return; emit(doc.iso_country_code,1); }",
+            "reduce": "_count"
+        },
+        "group_by_prefix": {
+            "map": "function(doc) { if (doc.pvt_deleted || doc.pvt_type !== 'phonebook') return; emit(doc.prefix,1); }",
+            "reduce": "_count"
+        }
+    }
+}
