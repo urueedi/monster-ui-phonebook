@@ -279,16 +279,21 @@ summary(Context, _AccountId, _AuthId, []) ->
     summary(Context, [?WH_PHONEBOOK_DB]);
 summary(Context, AccountId, AccountId, Parents) ->
     lager:debug("loading self phonebook with Acc:~s Parents:~p",[AccountId, Parents]),
-    ResellerId = wh_services:find_reseller_id(AccountId),
-    AuthId = cb_context:auth_account_id(Context),
-    case wh_services:is_reseller(AuthId) or cb_modules_util:is_superduper_admin(AuthId) of
-        'true' -> Dbs = find_phonebook_db(AccountId);
-        'false' -> Dbs = find_phonebook_db(ResellerId)
+    AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
+    case find_phonebook_db(AccountId) of
+        'false' -> whapps_maintenance:create_db(AccDb), Dbs = AccDb;
+        _Dbs -> Dbs = _Dbs
     end,
     lager:info("loading client phonebook in Dbs:~p",[Dbs]),
     summary(Context, Dbs);
 summary(Context, AccountId, _AuthId, _Parents) ->
-    Db = find_phonebook_db(AccountId),
+    AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
+    case find_phonebook_db(AccountId) of
+        'false' -> whapps_maintenance:create_db(AccDb)
+                   ,Db = AccDb;
+        _Db ->
+            Db = _Db
+    end,
     summary(Context, Db).
 
 -spec summary(cb_context:context(), ne_binaries()) -> cb_context:context().
@@ -605,19 +610,12 @@ normalize_field(K, V) ->
 find_phonebook_db([]) ->
     [?WH_PHONEBOOK_DB];
 find_phonebook_db(AccountId) ->
-    ResellerId = wh_services:find_reseller_id(AccountId),
     AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
-    ResDb = <<?WH_PHONEBOOK_DB/binary, "-", ResellerId/binary>>,
     case couch_mgr:db_exists(AccDb) of
         'true' ->
                 [AccDb];
         'false' ->
-            case couch_mgr:db_exists(ResDb) of
-                'true' ->
-                    [ResDb];
-                'false' ->
-                    [?WH_PHONEBOOK_DB]
-            end
+                'false'
     end.
 
 -spec account_parents(cb_context:context()) -> ne_binaries().
@@ -654,17 +652,27 @@ set_account_db(Context) ->
 
 -spec maybe_validate_for_multiphonebook(cb_context:context(), text()) -> cb_context:context().
 maybe_validate_for_multiphonebook(Context, Route) ->
+    OriginalAuth = cb_context:auth_doc(Context),
+    OriginalAccountId = wh_json:get_value(<<"account_id">>, OriginalAuth, <<>>),
+    AuthId = cb_context:auth_account_id(Context),
+    AccountId = cb_context:account_id(Context),
+    OriginalAccDb = <<?WH_PHONEBOOK_DB/binary, "-", OriginalAccountId/binary>>,
+    AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
+    DeckDb = <<?WH_PHONEBOOK_DB/binary>>,
+    TestDb = find_phonebook_db(AccountId),
     case Route of
-        'get' -> Context;
+        'get' -> 
+            case TestDb of
+                [OriginalAccDb] -> lager:debug("*-*allow but not pvt_internal change Reseller OriDb:~s / OriAcc:~s",[OriginalAccDb, OriginalAccountId])
+                            ,maybe_output_for_multiphonebook(Context, Route);
+                [DeckDb] -> lager:debug("*-*allow not any Reseller on DeckDb:~s / OriAcc:~s",[DeckDb, OriginalAccountId])
+                            ,maybe_output_for_multiphonebook(Context, Route);
+                [AccDb] ->  lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
+                            ,Context;
+                _ -> whapps_maintenance:create_db(AccDb)
+                     ,Context
+            end;
         _ ->
-            OriginalAuth = cb_context:auth_doc(Context),
-            OriginalAccountId = wh_json:get_value(<<"account_id">>, OriginalAuth, <<>>),
-            AuthId = cb_context:auth_account_id(Context),
-            AccountId = cb_context:account_id(Context),
-            OriginalAccDb = <<?WH_PHONEBOOK_DB/binary, "-", OriginalAccountId/binary>>,
-            AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
-            DeckDb = <<?WH_PHONEBOOK_DB/binary>>,
-            TestDb = find_phonebook_db(AccountId),
             case cb_modules_util:is_superduper_admin(AuthId) of
                 'true' -> Context;
                 _ -> lager:debug("not superduper Db:~s Route:~s Context:~p",[AccDb, Route, Context])
@@ -676,8 +684,9 @@ maybe_validate_for_multiphonebook(Context, Route) ->
                                     ,maybe_output_for_multiphonebook(Context, Route);
                         [DeckDb] -> lager:debug("*-*allow not any Reseller on DeckDb:~s / OriAcc:~s",[DeckDb, OriginalAccountId])
                                     ,maybe_output_for_multiphonebook(Context, Route);
-                        [AccDb] -> lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
-                                    ,Context
+                        [AccDb] ->  lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
+                                    ,Context;
+                        _ -> whapps_maintenance:create_db(AccDb)
                     end;
                 _ -> lager:debug("not allowed any change AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
                         ,maybe_output_for_multiphonebook(Context, Route)

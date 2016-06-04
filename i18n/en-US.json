@@ -23,10 +23,12 @@
 	
 	"phonebookDetail" : {
 		"connectivityTitle" : "Edit phonebook entry",
+		"id": "Number",
 		"country": "Country",
+		"company": "Company",
 		"name": "Name",
 		"address" : "Address",
-		"zip" : "ZIP",
+		"zip" : "Zip",
 		"city" : "City",
 		"local" : "Location",
 		"email" : "Email",

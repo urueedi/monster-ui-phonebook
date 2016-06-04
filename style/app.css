@@ -5,7 +5,7 @@
 	margin: 0;
 }
 #phonebook_detail_dialog {
-	width: 700px;
+	width: 450px;
 	padding: 15px;
 }
 #phonebook_detail_dialog .sub-title {
@@ -15,11 +15,10 @@
 	padding-bottom: 20px;
 }
 #phonebook_detail_dialog .connectivity-info .info-block {
-	font-size: 12px;
+	font-size: 22px;
 	display: inline-block;
 	vertical-align: top;
 	position: relative;
-	width: 240px;
 }
 #phonebook_detail_dialog .connectivity-info .info-block.cloud-block {
 	width: 220px;
@@ -62,6 +61,12 @@
 }
 #phonebook_detail_dialog .monster-link {
 	margin: 0;
+	padding: 10px;
+}
+#phonebook_detail_dialog .monster-delete {
+	margin: 0;
+	float: left;
+	padding: 10px;
 }
 #phonebook_detail_dialog .technical-data,
 #phonebook_detail_dialog .technical-details-hide {
@@ -98,8 +103,8 @@ button.monster-button-secondary.apply-filter {
         min-width: inherit;
 }
 table.table tr > td {
-    line-height: 30px;
-    max-width: 70px;
+    line-height: 20px;
+    max-width: 100px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

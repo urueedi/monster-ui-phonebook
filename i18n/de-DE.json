@@ -23,7 +23,9 @@
 	
 	"phonebookDetail" : {
 		"connectivityTitle" : "Eintrag ändern",
+                "id": "Nummer",
                 "country": "Land",
+		"company": "Firma",
                 "name": "Name",
                 "address" : "Adresse",
                 "zip" : "PLZ",

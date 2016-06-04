@@ -1,6 +1,6 @@
 # monster-ui-phonebook (Cloudbased phonebook GUI)
-![phonebook1](https://raw.githubusercontent.com/urueedi/monster-ui-phonebook/master/metadata/screenshots/phonebook0.png)
-![phonebook2](https://raw.githubusercontent.com/urueedi/monster-ui-phonebook/master/metadata/screenshots/phonebook1.png)
+![phonebook1](https://raw.githubusercontent.com/urueedi/monster-ui-phonebook/master/metadata/screenshots/phonebook_1.png)
+![phonebook2](https://raw.githubusercontent.com/urueedi/monster-ui-phonebook/master/metadata/screenshots/phonebook_2.png)
 
 This is incl. phonebook, speeddial, blacklist for incoming callcheck
 

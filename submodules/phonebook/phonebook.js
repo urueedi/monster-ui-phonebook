@@ -11,13 +11,13 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
             appFlags: {
                 tableData: []
             },
-            phonebookRender: function(e) {
+            phonebookRender: function(ext) {
                 var self = this,
-                    e = e || {},
-                    i = e.parent || $(".right-content"),
+                    ext = ext || {},
+                    inx = ext.parent || $(".right-content"),
                     template = $(monster.template(self, "phonebook-layout"));
                 self.phonebookInitTable(template, function() {
-                    self.phonebookBindEvents(template), i.empty().append(template)
+                    self.phonebookBindEvents(template), inx.empty().append(template)
                 })
             },
             phonebookBindEvents: function(container) {
@@ -25,15 +25,17 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                 container.on("click", ".detail-link", function() {
                     var data = $(this),
                         row = data.context.dataset.row,
-                        s = self.appFlags.tableData[row][5],
+                        sData = self.appFlags.tableData[row][5],
                         detail = $(monster.template(self, "phonebook-detail", {
-                            metadata: s
+                            metadata: sData
                         }));
-                    detail.find("#close").on("click", function() {
+                    detail.find("#cancel").on("click", function() {
                         edit.dialog("close").remove()
-                    }), detail.find(".book-details-save").on("click", function() {
-
-                        detail.find(".book-data, .book-details-hide").show(), detail.find(".book-details").hide()
+                    }), detail.find("#book-detail-delete").on("click", function() {
+                        edit.dialog("close").remove()
+                    }), detail.find("#book-detail-save").on("click", function() {
+                        detail.find(".book-data, .book-details-hide").show(), detail.find(".book-details").hide(),
+                        edit.dialog("close").remove()
                     });
                     var edit = monster.ui.dialog(detail, {
                         title: self.i18n.active().phonebook.detailDialog.popupTitle,
@@ -49,8 +51,6 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                             return '<image class="small flag" image="' + table.country + '"></image>'
                         }
                     }, {
-                        sTitle: self.i18n.active().phonebook.tableTitles.company
-                    }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.name
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.address
@@ -61,8 +61,7 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.details,
                         fnRender: function(table) {
-//console.log(table);
-                            return '<a href="#" class="detail-link monster-link blue" data-row="' + table.iDataRow + '" id="'+ table.aData[] +'"><i class="fa fa-eye"></i></a>'
+                            return '<a href="#" class="detail-link monster-link blue" data-row="' + table.iDataRow +'"><i class="fa fa-eye"></i></a>'
                         }
                     }, {
                         bVisible: !1
@@ -79,7 +78,7 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
             phonebookFormatDataTable: function(data) {
                 var ret = [];
                 return $.each(data, function() {
-                    ret.push([this.country, this.company, this.name, this.address, this.zip, this.city, this.id])
+                    ret.push([this.country||'', this.name||'', this.address||'', this.zip||'', this.city||'', this||''])
                 }), ret
             },
             phonebookGetData: function(callback) {
