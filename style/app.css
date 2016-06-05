@@ -2,7 +2,28 @@
 	clear: right;
 }
 #phonebook_container .detail-link {
-	margin: 0;
+	margin: 10px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_quickcalldevice {
+    display: inline-block;
+    margin: 5px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_phonebook {
+    display: inline-block;
+    padding: 6px 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_phonebook button {
+    margin-right: 2px;
+    min-width: 50px;
+    padding: 6px 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
 }
 #phonebook_detail_dialog {
 	width: 450px;
@@ -77,6 +98,18 @@
 	padding-top: 20px;
 	border-top: solid 1px #c0c0c9;
 }
+#phonebook_detail_dialog .edit-detail {
+    float: left;
+    margin: 2px;
+    width: 49%;
+}
+#phonebook_container select#device_quickcall {
+    max-width: 100px;
+}
+#phonebook_detail_dialog select#metadata_country {
+    max-width: 220px;
+    font-size: 15px;
+}
 #speed_dial_container .table .detail-link {
 	margin: 0px;
 }
@@ -108,4 +141,22 @@ table.table tr > td {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+#actions_phonebook .upload-container {
+        display: flex;
+}
+#actions_phonebook .upload-container input[type="text"] {
+        margin: 0;
+        width: auto;
+        box-shadow: none;
+        border-radius: 2px 0px 0px 2px;
+        margin-right: -1px;
+        flex-grow: 1;
+}
+#actions_phonebook .upload-container button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        width: 170px;
+        padding-top: 4px;
+        padding-bottom: 4px;
 }

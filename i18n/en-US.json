@@ -6,6 +6,9 @@
 	},
 
 	"phonebook": {
+                "renew": "Erneuern",
+                "add": "Zufügen",
+                "delete": "Löschen",
 		"title": "Phonebook",
 		"tableTitles": {
                         "country": "Country",
@@ -18,7 +21,9 @@
 		},
 		"detailDialog": {
 			"popupTitle": "Edit phonebook entry"
-		}
+		},
+                "quickcallDevice": "Quickcall Device",
+                "setquickcallDevice": "Please, go to your account settings and select first a quickcall device."
 	},
 	
 	"phonebookDetail" : {

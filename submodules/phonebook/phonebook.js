@@ -1,8 +1,12 @@
-define(["require", "jquery", "underscore", "monster", "toastr"], function(require) {
+define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags", "chosenImage"], function(require) {
     var $ = require("jquery"),
         _ = require("underscore"),
         monster = require("monster"),
         toastr = require("toastr"),
+        quickcalldevice = require('monster-quickcalldevice'),
+        flags = require('monster-flags'),
+        chosenImage = require('chosenImage'),
+
         app = {
             requests: {},
             subscribe: {
@@ -11,44 +15,89 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
             appFlags: {
                 tableData: []
             },
-            phonebookRender: function(ext) {
+            phonebookRender: function(content) {
                 var self = this,
-                    ext = ext || {},
-                    inx = ext.parent || $(".right-content"),
+                    content = content || {},
+                    index = content.parent || $(".right-content"),
                     template = $(monster.template(self, "phonebook-layout"));
                 self.phonebookInitTable(template, function() {
-                    self.phonebookBindEvents(template), inx.empty().append(template)
+                    self.phonebookBindEvents(template), index.empty().append(template)
                 })
             },
             phonebookBindEvents: function(container) {
                 var self = this;
+
+                // add phoneentry
+                container.on("click", "#add-phonebook-link", function() {
+                    var data = $(this),
+                        detail = $(monster.template(self, "phonebook-add", {
+                            metadata: ''
+                        }));
+                    detail.find("#cancel").on("click", function() {
+                        edit.dialog("close").remove()
+                    }), detail.find("#book-detail-add").on("click", function() {
+                        var formData = monster.ui.getFormData('phonebook_detail_dialog');
+                        self.phonebookAdd(formData.metadata, function(data) {
+                                self.render();
+                                popup.dialog('close').remove();
+                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.toastr.addSuccess + data.id ));
+                        });
+                        var popup = monster.ui.dialog(addphonebookTemplate, {
+                                title: self.i18n.active().phonebook.dialograte.addTitle
+                        });
+                        edit.dialog("close").remove()
+                    });
+                    flags.populateDropdown(detail.find('#metadata_country'), 'inherit', {inherit: ''});
+                    detail.find('#metadata_country').chosenImage({ search_contains: true, width: '220px' });
+                    var edit = monster.ui.dialog(detail, {
+                        title: self.i18n.active().phonebook.detailDialog.popupTitle,
+                        position: ["center", 20]
+                    });
+                }),
+                // edit phoneentry
                 container.on("click", ".detail-link", function() {
                     var data = $(this),
                         row = data.context.dataset.row,
-                        sData = self.appFlags.tableData[row][5],
-                        detail = $(monster.template(self, "phonebook-detail", {
+                        sData = self.appFlags.tableData[row][6],
+                        detail = $(monster.template(self, "phonebook-edit", {
                             metadata: sData
                         }));
                     detail.find("#cancel").on("click", function() {
                         edit.dialog("close").remove()
                     }), detail.find("#book-detail-delete").on("click", function() {
                         edit.dialog("close").remove()
-                    }), detail.find("#book-detail-save").on("click", function() {
-                        detail.find(".book-data, .book-details-hide").show(), detail.find(".book-details").hide(),
+                    }), detail.find("#book-detail-update").on("click", function() {
+                        var formData = monster.ui.getFormData('phonebook_detail_dialog');
+                        self.phonebookUpdate(formData.metadata.id, formData.metadata, function(data) {
+                                self.render();
+                                popup.dialog('close').remove();
+                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.toastr.addSuccess + data.id ));
+                        });
                         edit.dialog("close").remove()
                     });
+                    flags.populateDropdown(detail.find('#metadata_country'), self.appFlags.tableData[row][1]||'inherit', {inherit: ''});
+                    detail.find('#metadata_country').chosenImage({ search_contains: true, width: '220px' });
                     var edit = monster.ui.dialog(detail, {
                         title: self.i18n.active().phonebook.detailDialog.popupTitle,
                         position: ["center", 20]
-                    })
+                    });
                 })
             },
             phonebookInitTable: function(template, func) {
                 var self = this,
-                    table = [{
+                    table = [
+                    {
+                        sTitle: '<input type="checkbox" id="select_all_bookentrys"/>',
+                        sWidth: "40px",
+                        bSortable: !1,
+                        fnRender: function(data) {
+//                            var no = data.aData[1];
+                            return '<input type="checkbox" class="select-checkbox" book_uri="' + data.iDataRow + '"/>'
+                        }
+                    }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.country,
-                        fnRender: function(table) {
-                            return '<image class="small flag" image="' + table.country + '"></image>'
+                        fnRender: function(data) {
+                            return '<img src="css/assets/flags/24/' + data.aData[1] + '.png">'
                         }
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.name
@@ -60,25 +109,70 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                         sTitle: self.i18n.active().phonebook.tableTitles.city
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.details,
-                        fnRender: function(table) {
-                            return '<a href="#" class="detail-link monster-link blue" data-row="' + table.iDataRow +'"><i class="fa fa-eye"></i></a>'
+                        bSortable: false,
+                        fnRender: function(data) {
+                            return '<a href="#" class="detail-link monster-link blue" data-row="' + data.iDataRow +'"><i class="fa fa-eye"></i></a>'+
+                                    '<a href="#" class="link-quickcall user_quickcalldevice monster-link blue" data-row="' + data.aData[7] +'"><i class="fa fa-phone"></i></a>'
                         }
                     }, {
                         bVisible: !1
                     }];
-                self.phonebookGetData(function(self) {
-                    monster.ui.table.create("phonebook", template.find("#phonebook_grid"), table, self, {
-                        sDom: '<"table-custom-actions">frtlip',
+                self.phonebookGetData(function(data) {
+                    monster.ui.table.create("phonebook", template.find("#phonebook_grid"), table, data, {
+                        sDom: '<"actions_quickcalldevice"><"actions_phonebook">frtlip',
                         aaSorting: [
-                            [2, "asc"]
+                            [3, "asc"]
                         ]
-                    }),$.fn.dataTableExt.afnFiltering.pop(), func && func()
-                })
+                }),
+                $.fn.dataTableExt.afnFiltering.pop(),func && func(),
+
+                $("div.actions_quickcalldevice", template).html('<div class="device-selector">' +
+                    self.i18n.active().phonebook.quickcallDevice + ' <select class="medium" id="device_quickcall"></select></div>')
+
+                if(typeof monster.apps.auth.currentUser.quickcalldevice == 'undefined')
+                    toastr.warning(self.i18n.active().phonebook.setquickcallDevice, '', {"timeOut": 10000});
+                quickcalldevice.populateDropdown(template.find('#device_quickcall'), monster.apps.auth.currentUser.quickcalldevice||'inherit', {inherit: self.i18n.active().defaultquickcalldevice});
+
+                $("div.actions_phonebook", template).html('<button id="renew-phonebook-link" class="monster-button monster-button-primary" data-action="renew">' +
+                self.i18n.active().phonebook.renew + '</button><button id="add-phonebook-link" class="monster-button monster-button-success" data-action="addd">' +
+                self.i18n.active().phonebook.add +  '</button><button id="delete-phonebook-link" class="monster-button monster-button-danger" data-action="deleted">' +
+                self.i18n.active().phonebook.delete + '</button><button type="button" class="monster-button monster-button-success upload-action upload-submit" data-action="upload">'+
+                '<i class="fa fa-upload"></i></button>'),
+
+                $('#select_all_bookentrys').click(function (e) {
+                    $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+                });
+
+//                $(".select_all_bookentrys", template).change(function() {
+//                    $(".select-checkbox", template).prop("checked", $(this).is(":checked"))
+//                })
+                $(template).delegate(".link-upload", "click", function() {
+
+                }),
+                $(template).delegate(".link-quickcall", "click", function() {
+                        var m = $("#device_quickcall", template).val(),
+                        number = $(this).data("number");
+                        deviceId && m.length === 32 ? self.callApi({
+                            resource: "device.quickcall",
+                            data: {
+                                accountId: self.accountId,
+                                deviceId: deviceId,
+                                number: number
+                            },
+                            success: function(template) {var startcall =  new Date().getTime(); toastr.info(self.i18n.active().phonebook.quickcall_startedto + s, '', {"timeOut": 35000});
+                                var stopcall =  new Date().getTime();
+                                var difftime = (stopcall*1) - (startcall*1);
+//                                if(difftime < 35000)
+//                                        toastr.error(self.i18n.active().phonebook.quickcall_startedto + s, '', {"timeOut": 3000})
+                            }
+                        }) : toastr.error(self.i18n.active().phonebook.you_need_to_select_a_registered_device, '', {"timeOut": 3000})
+                });
+                });
             },
             phonebookFormatDataTable: function(data) {
                 var ret = [];
                 return $.each(data, function() {
-                    ret.push([this.country||'', this.name||'', this.address||'', this.zip||'', this.city||'', this||''])
+                    ret.push(['', this.country||'', this.name||'', this.address||'', this.zip||'', this.city||'', this||'', this.id||''])
                 }), ret
             },
             phonebookGetData: function(callback) {
@@ -93,6 +187,49 @@ define(["require", "jquery", "underscore", "monster", "toastr"], function(requir
                         self.appFlags.tableData = ret, callback && callback(ret)
                     }
                 })
+            },
+            phonebookAdd: function(data, callback){
+                    var self = this;
+                    self.callApi({
+                            resource: 'phonebook.create',
+                            data: {
+                                    accountId: self.accountId,
+                                    data: data
+                            },
+                            success: function(data) {
+                                    callback(data.data);
+                            }
+                    });
+            },
+
+            phonebookUpdate: function(phonebookId, data, callback){
+                    var self = this;
+                    self.callApi({
+                            resource: 'phonebook.update',
+                            data: {
+                                    accountId: self.accountId,
+                                    rateId: phonebookId,
+                                    data: data
+                            },
+                            success: function(data) {
+                                    callback && callback(data.data);
+                            }
+                    });
+            },
+
+            phonebookDelete: function(phonebookId, callback){
+                    var self = this;
+                    self.callApi({
+                            resource: 'phonebook.delete',
+                            data: {
+                                    accountId: self.accountId,
+                                    rateId: phonebookId,
+                                    data: {}
+                            },
+                            success: function(data) {
+                                    callback && callback(data.data);
+                            }
+                    });
             }
         };
     return app

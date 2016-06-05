@@ -1,8 +1,8 @@
 define(["require", "jquery", "underscore", "monster"], function(e) {
-    var t = e("jquery"),
-        n = e("underscore"),
-        r = e("monster"),
-        i = {
+    var $ = e("jquery"),
+        _ = e("underscore"),
+        monster = e("monster"),
+        app = {
             name: "phonebook",
             css: ["app"],
             i18n: {
@@ -21,41 +21,41 @@ define(["require", "jquery", "underscore", "monster"], function(e) {
             requests: {},
             subscribe: {},
             subModules: ["phonebook", "speeddial", "blacklist"],
-            load: function(e) {
-                var t = this;
-                t.initApp(function() {
-                    e && e(t)
+            load: function(callback) {
+                var self = this;
+                self.initApp(function() {
+                    callback && callback(self)
                 })
             },
-            initApp: function(e) {
-                var t = this;
-                r.pub("auth.initApp", {
-                    app: t,
-                    callback: e
+            initApp: function(callback) {
+                var self = this;
+                monster.pub("auth.initApp", {
+                    app: self,
+                    callback: callback
                 })
             },
-            render: function(e) {
-                var n = this,
-                    i = e || t("#monster-content"),
-                    s = t(r.template(n, "app"));
+            render: function(callback) {
+                var self = this,
+                    content = callback || $("#monster-content"),
+                    template = $(monster.template(self, "app"));
                     // accountid switch urs
-                    n.accountId = r.apps.auth.accountId;
-                s.find(".category#phonebook").addClass("active"), r.pub("phonebook.phonebook.render", {
-                    parent: s.find(".right-content")
-                }), n.bindEvents(s), i.empty().append(s)
+                    _.accountId = monster.apps.auth.accountId;
+                template.find(".category#phonebook").addClass("active"), monster.pub("phonebook.phonebook.render", {
+                    parent: template.find(".right-content")
+                }), self.bindEvents(template), content.empty().append(template)
             },
-            bindEvents: function(e) {
-                var n = this,
-                    i = e.find(".right-content");
-                e.find(".category").on("click", function() {
-                    var n = t(this),
-                        s = {
-                            parent: i
+            bindEvents: function(callback) {
+                var self = this,
+                    content = callback.find(".right-content");
+                callback.find(".category").on("click", function() {
+                    var self = $(this),
+                        option = {
+                            parent: content
                         },
-                        o = n.attr("id");
-                    e.find(".category").removeClass("active"), n.toggleClass("active"), i.empty(), r.pub("phonebook." + o + ".render", s)
+                        attribut = self.attr("id");
+                    callback.find(".category").removeClass("active"), self.toggleClass("active"), content.empty(), monster.pub("phonebook." + attribut + ".render", option)
                 })
             }
         };
-    return i
+    return app
 });

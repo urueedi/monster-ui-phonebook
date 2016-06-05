@@ -8,35 +8,35 @@
 
 		<div class="connectivity-info">
 			<div class="info-block device-block">
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.id}}:</label>
-                                        {{ metadata.id }}
+                                        <input type="text" id="metadata.id" name="metadata.id" value="{{ metadata.id }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.country}}:</label>
-                                        <input type="text" id="metadata.country" name="metadata.country" value="{{ metadata.country }}"/>
+                                        <select id="metadata_country" name="metadata.country" data-original_value="{{metadata.country}}"></select>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.name}}:</label>
                                         <input type="text" id="metadata.name" name="metadata.name" value="{{ metadata.name }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.address}}:</label>
                                         <input type="text" id="metadata.address" name="metadata.address" value="{{ metadata.address }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.zip}}:</label>
                                         <input type="text" id="metadata.zip" name="metadata.zip" value="{{ metadata.zip }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.city}}:</label>
                                         <input type="text" id="metadata.city" name="metadata.city" value="{{ metadata.city }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.local}}:</label>
                                         <input type="text" id="metadata.local" name="metadata.local" value="{{ metadata.local }}"/>
                                 </div>
-                                <div class="input-div">
+                                <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.email}}:</label>
                                         <input type="text" id="metadata.email" name="metadata.email" value="{{ metadata.email }}"/>
                                 </div>
@@ -46,8 +46,7 @@
 	</div>
 
 	<div class="action-bar dialog-buttons-wrapper">
-		<a id="book-detail-delete" class="monster-delete"><i class="fa fa-trash-o monster-red"></i> {{ i18n.delete }}</a> 
 		<a id="cancel" class="cancel-link monster-link blue">{{ i18n.cancel }}</a> 
-		<button id="book-detail-save" class="monster-button monster-button-success save">{{ i18n.save }}</button>
+		<button id="book-detail-add" class="monster-button monster-button-success save">{{ i18n.save }}</button>
 	</div>
 </div>
