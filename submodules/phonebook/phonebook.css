@@ -1,0 +1,143 @@
+#phonebook_grid {
+	clear: right;
+}
+#phonebook_container .detail-link {
+	margin: 10px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_quickcalldevice {
+    display: inline-block;
+    margin: 5px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_phonebook {
+    display: inline-block;
+    padding: 6px 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+}
+#phonebook_container #phonebook_grid_wrapper .actions_phonebook button {
+    margin-right: 2px;
+    min-width: 50px;
+    padding: 6px 6px;
+    padding-top: 6px;
+    padding-right: 6px;
+    padding-bottom: 6px;
+    padding-left: 6px;
+}
+#phonebook_detail_dialog {
+	width: 450px;
+	padding: 15px;
+}
+#phonebook_detail_dialog .sub-title {
+	padding-bottom: 20px;
+}
+#phonebook_detail_dialog .general-info {
+	padding-bottom: 20px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block {
+	font-size: 22px;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block {
+	width: 220px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block i {
+	color: #606069;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.device-block .connectivity-icon {
+	margin-left: 90px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-icon,
+#phonebook_detail_dialog .connectivity-info .info-block.server-block .connectivity-icon {
+	margin-left: 70px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-arrow {
+	position: absolute;
+	right: -20px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .connectivity-arrow:first-of-type {
+	right: inherit;
+	left: -40px;
+}
+#phonebook_detail_dialog .connectivity-info .info-line {
+	display: flex;
+}
+#phonebook_detail_dialog .connectivity-info .info-line .title {
+	font-weight: 600;
+	text-align: right;
+	padding-right: 5px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.device-block .info-line .title {
+	min-width: 110px;
+}
+#phonebook_detail_dialog .connectivity-info .info-block.cloud-block .info-line .title {
+	min-width: 80px;
+}
+#phonebook_detail_dialog .connectivity-info .info-line .value {
+	text-align: left;
+	color: #0087e0;
+}
+#phonebook_detail_dialog .monster-link {
+	margin: 0;
+	padding: 10px;
+}
+#phonebook_detail_dialog .monster-delete {
+	margin: 0;
+	float: left;
+	padding: 10px;
+}
+#phonebook_detail_dialog .technical-data,
+#phonebook_detail_dialog .technical-details-hide {
+	display: none;
+}
+#phonebook_detail_dialog .action-bar {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: solid 1px #c0c0c9;
+}
+#phonebook_detail_dialog .edit-detail {
+    float: left;
+    margin: 2px;
+    width: 49%;
+}
+#phonebook_container select#device_quickcall {
+    max-width: 100px;
+}
+#phonebook_detail_dialog select#metadata_country {
+    max-width: 220px;
+    font-size: 15px;
+}
+#phonebook_container .left-menu > div {
+	margin-top: 10px;
+}
+button.monster-button-secondary.apply-filter {
+        min-width: inherit;
+}
+table.table tr > td {
+    line-height: 20px;
+    max-width: 100px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+#upload .upload-container {
+        display: flex;
+}
+#upload .upload-container input[type="text"] {
+        margin: 0;
+        width: auto;
+        box-shadow: none;
+        border-radius: 2px 0px 0px 2px;
+        margin-right: -1px;
+        flex-grow: 1;
+}
+#upload .upload-container button {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        width: 170px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+}

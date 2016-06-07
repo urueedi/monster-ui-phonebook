@@ -10,7 +10,7 @@
 			<div class="info-block device-block">
                                 <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.id}}:</label>
-                                        {{ metadata.id }}
+                                        {{ metadata.id }}<input type="hidden" id="metadata.id" name="metadata.id" value="{{ metadata.id }}"/>
                                 </div>
                                 <div class="input-div edit-detail">
                                         <label>{{i18n.phonebookDetail.country}}:</label>

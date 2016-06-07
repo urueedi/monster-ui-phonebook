@@ -23,7 +23,13 @@
 			"popupTitle": "Telefonbucheintrag ändern"
 		},
                 "quickcallDevice": "Schnellanrufgerät",
-                "setquickcallDevice": "Bitte, zuerst ein Schnellanruf-Gerät in den Kontoeinstellungen auswählen."
+                "setquickcallDevice": "Bitte, zuerst ein Schnellanruf-Gerät in den Kontoeinstellungen auswählen.",
+                "quickcall_startedto": "Schnellanruf ausgelöst zu: ",
+                "deleteSuccess": "Eintrag wurde erfolgreich gelöscht ",
+                "addSuccess": "Eintrag wurde erfolgreich gespeichert ",
+                "uploadDialog": {
+			"popupTitle": "Upload von Telefonbuchdaten"
+		}
 	},
 	
 	"phonebookDetail" : {

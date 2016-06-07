@@ -138,36 +138,28 @@ validate(Context) ->
 validate(Context, Id) ->
     validate_phonebook(Context, Id, cb_context:req_verb(Context)).
 validate(Context, ?NUMBER, Phonenumber) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'phonebook'),
-    validate_number(Phonenumber, Context2).
+    validate_number(Phonenumber, Context).
 
 -spec validate_phonebooks(cb_context:context(), http_method()) -> cb_context:context().
 validate_phonebooks(Context, ?HTTP_GET) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'get'),
-    AccountId = wh_util:format_account_id(cb_context:account_id(Context2), 'raw'),
-    AuthId = wh_util:format_account_id(cb_context:auth_account_id(Context2), 'raw'),
-    Parents = account_parents(Context2),
-    summary(Context2, AccountId, AuthId, Parents);
+    AccountId = wh_util:format_account_id(cb_context:account_id(Context), 'raw'),
+    AuthId = wh_util:format_account_id(cb_context:auth_account_id(Context), 'raw'),
+    Parents = account_parents(Context),
+    summary(Context, AccountId, AuthId, Parents);
 validate_phonebooks(Context, ?HTTP_PUT) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'put'),
-    create(set_account_db(Context2));
+    create(set_account_db(Context));
 validate_phonebooks(Context, ?HTTP_POST) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'post'),
-    check_uploaded_file(set_account_db(Context2)).
+    check_uploaded_file(set_account_db(Context)).
 
 -spec validate_phonebook(cb_context:context(), path_token(), http_method()) -> cb_context:context().
 validate_phonebook(Context, Id, ?HTTP_GET) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'get'),
-    read(Id, set_account_db(Context2));
+    read(Id, set_account_db(Context));
 validate_phonebook(Context, Id, ?HTTP_POST) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'post'),
-    update(Id, set_account_db(Context2));
+    update(Id, set_account_db(Context));
 validate_phonebook(Context, Id, ?HTTP_PATCH) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'patch'),
-    validate_patch(Id, set_account_db(Context2));
+    validate_patch(Id, set_account_db(Context));
 validate_phonebook(Context, Id, ?HTTP_DELETE) ->
-    Context2 = maybe_validate_for_multiphonebook(Context, 'delete'),
-    read(Id, set_account_db(Context2)).
+    read(Id, set_account_db(Context)).
 
 -spec post(cb_context:context()) -> cb_context:context().
 -spec post(cb_context:context(), path_token()) -> cb_context:context().
@@ -175,23 +167,19 @@ post(Context) ->
     _ = init_db(),
     _ = wh_util:spawn(fun() -> upload_csv(Context) end),
     crossbar_util:response_202(<<"attempting to insert phonebook from the uploaded document">>, Context).
-post(Context, _RateId) ->
-    Context2 = maybe_check_for_multiphonebook(Context, 'post'),
-    crossbar_doc:save(Context2).
+post(Context, _Id) ->
+    crossbar_doc:save(Context).
 
-patch(Context, _RateId) ->
-    Context2 = maybe_check_for_multiphonebook(Context, 'patch'),
-    crossbar_doc:save(Context2).
+patch(Context, _Id) ->
+    crossbar_doc:save(Context).
 
 -spec put(cb_context:context()) -> cb_context:context().
 put(Context) ->
-    Context2 = maybe_check_for_multiphonebook(Context, 'put'),
-    crossbar_doc:save(Context2).
+    crossbar_doc:save(Context).
 
 -spec delete(cb_context:context(), path_token()) -> cb_context:context().
-delete(Context, _RateId) ->
-    Context2 = maybe_check_for_multiphonebook(Context, 'delete'),
-    crossbar_doc:delete(Context2).
+delete(Context, _Id) ->
+    crossbar_doc:delete(Context).
 
 -spec validate_number(ne_binary(), cb_context:context()) -> cb_context:context().
 validate_number(Phonenumber, Context) ->
@@ -643,122 +631,3 @@ set_account_db(Context) ->
     init_db(Db),
     cb_context:set_account_db(Context, Db).
 
-%% ---------------------------------------------------------
-%%
-%% additional for mutliple phonebookdecks 
-%% check and validation
-%%
-%% ---------------------------------------------------------
-
--spec maybe_validate_for_multiphonebook(cb_context:context(), text()) -> cb_context:context().
-maybe_validate_for_multiphonebook(Context, Route) ->
-    OriginalAuth = cb_context:auth_doc(Context),
-    OriginalAccountId = wh_json:get_value(<<"account_id">>, OriginalAuth, <<>>),
-    AuthId = cb_context:auth_account_id(Context),
-    AccountId = cb_context:account_id(Context),
-    OriginalAccDb = <<?WH_PHONEBOOK_DB/binary, "-", OriginalAccountId/binary>>,
-    AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
-    DeckDb = <<?WH_PHONEBOOK_DB/binary>>,
-    TestDb = find_phonebook_db(AccountId),
-    case Route of
-        'get' -> 
-            case TestDb of
-                [OriginalAccDb] -> lager:debug("*-*allow but not pvt_internal change Reseller OriDb:~s / OriAcc:~s",[OriginalAccDb, OriginalAccountId])
-                            ,maybe_output_for_multiphonebook(Context, Route);
-                [DeckDb] -> lager:debug("*-*allow not any Reseller on DeckDb:~s / OriAcc:~s",[DeckDb, OriginalAccountId])
-                            ,maybe_output_for_multiphonebook(Context, Route);
-                [AccDb] ->  lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
-                            ,Context;
-                _ -> whapps_maintenance:create_db(AccDb)
-                     ,Context
-            end;
-        _ ->
-            case cb_modules_util:is_superduper_admin(AuthId) of
-                'true' -> Context;
-                _ -> lager:debug("not superduper Db:~s Route:~s Context:~p",[AccDb, Route, Context])
-            end,
-            case wh_services:is_reseller(AuthId) and not cb_modules_util:is_superduper_admin(AuthId) of
-                'true' ->
-                    case TestDb of
-                        [OriginalAccDb] -> lager:debug("*-*allow but not pvt_internal change Reseller OriDb:~s / OriAcc:~s",[OriginalAccDb, OriginalAccountId])
-                                    ,maybe_output_for_multiphonebook(Context, Route);
-                        [DeckDb] -> lager:debug("*-*allow not any Reseller on DeckDb:~s / OriAcc:~s",[DeckDb, OriginalAccountId])
-                                    ,maybe_output_for_multiphonebook(Context, Route);
-                        [AccDb] ->  lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
-                                    ,Context;
-                        _ -> whapps_maintenance:create_db(AccDb)
-                    end;
-                _ -> lager:debug("not allowed any change AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
-                        ,maybe_output_for_multiphonebook(Context, Route)
-            end
-    end.
-
--spec maybe_output_for_multiphonebook(cb_context:context(), text()) -> cb_context:context().
-maybe_output_for_multiphonebook(Context, Route) ->
-    case Route of
-        'delete' ->
-            Context2 = cb_context:add_validation_error(
-              <<"phonebook">>
-              ,<<"required">>
-              ,wh_json:from_list(
-                 [{<<"message">>, <<"Delete for reseller phonebook isn't support!">>}]
-                )
-              ,Context
-             ),Context2;
-        'put' ->
-            Context2 = cb_context:add_validation_error(
-              <<"phonebook">>
-              ,<<"required">>
-              ,wh_json:from_list(
-                 [{<<"message">>, <<"Only subaccount of reseller are supported to add phonebook!">>}]
-                )
-              ,Context
-             ),Context2;
-        _ -> Context
-    end.
-
--spec maybe_check_for_multiphonebook(cb_context:context(), text()) -> cb_context:context().
-maybe_check_for_multiphonebook(Context, Route) ->
-    case Route of
-        'post' -> maybe_update_pvt(Context);
-        'put' -> maybe_update_pvt(Context);
-        'get' -> maybe_update_pvt(Context);
-        _ -> Context
-    end.
-
-%% --------------------------------------------------------------------
-%% check put and push if is reseller and not on his phonebookdeck-AccoutId
-%% --------------------------------------------------------------------
-
--spec maybe_update_pvt(cb_context:context()) -> cb_context:context().
-maybe_update_pvt(Context) ->
-    JObj = cb_context:doc(Context),
-    OriginalAuth = cb_context:auth_doc(Context),
-    Internal = wh_json:get_value(<<"internal_phonebook_cost">>, JObj, <<"1.00">>),
-    OriginalAccountId = wh_json:get_value(<<"account_id">>, OriginalAuth, <<>>),
-    AuthId = cb_context:auth_account_id(Context),
-    AccountId = cb_context:account_id(Context),
-    OriginalAccDb = <<?WH_PHONEBOOK_DB/binary, "-", OriginalAccountId/binary>>,
-    AccDb = <<?WH_PHONEBOOK_DB/binary, "-", AccountId/binary>>,
-    DeckDb = <<?WH_PHONEBOOK_DB/binary>>,
-    TestDb = cb_context:account_db(Context),
-    case cb_modules_util:is_superduper_admin(AuthId) of
-        'true' -> cb_context:set_doc(Context, wh_json:set_value(<<"pvt_internal_phonebook_cost">>, Internal, JObj));
-        'false' -> lager:debug("*-*not superduper Db:~s",[AccDb])
-    end,
-    case wh_services:is_reseller(AuthId) and not cb_modules_util:is_superduper_admin(AuthId) of
-        'true' ->
-            case TestDb of
-                [OriginalAccDb] -> lager:debug("*-*allow but not pvt_internal change Reseller OriDb:~s / OriAcc:~s",[OriginalAccDb, OriginalAccountId])
-                                    ,cb_context:set_doc(Context, wh_json:delete_key(<<"internal_phonebook_cost">>, JObj));
-                [DeckDb] -> lager:debug("*-*allow not any Reseller DeckDb:~s / OriAcc:~s",[DeckDb, OriginalAccountId]);
-                [AccDb] -> lager:debug("*-*allowed change all of Reseller AccDb:~s / OriAcc:~s",[AccDb, OriginalAccountId])
-                            ,cb_context:set_doc(Context, wh_json:set_value(<<"pvt_internal_phonebook_cost">>, Internal, JObj))
-            end;
-        'false' ->
-            case cb_modules_util:is_superduper_admin(AuthId) of
-                'true' -> lager:debug("*-*allow all change pvt_internal_phonebook_cost is superduper AccDb:~s",[AccDb])
-                            ,cb_context:set_doc(Context, wh_json:set_value(<<"pvt_internal_phonebook_cost">>, Internal, JObj));
-                'false' -> lager:debug("not allow to change any Acc:~s / OriAcc:~s",[AccountId, OriginalAccountId])
-            end
-    end.

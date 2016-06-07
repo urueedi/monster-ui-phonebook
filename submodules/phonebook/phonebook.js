@@ -27,6 +27,38 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
             phonebookBindEvents: function(container) {
                 var self = this;
 
+                // upload phonebook
+                container.on("click", "#upload-link", function() {
+                    var data = $(this),
+                        detail = $(monster.template(self, "upload", {
+                            metadata: data
+                        }));
+                    detail.find(".cancel-link").on("click", function() {
+                        edit.dialog("close").remove()
+
+                    });
+                    var edit = monster.ui.dialog(detail, {
+                        title: self.i18n.active().phonebook.uploadDialog.popupTitle,
+                        position: ["center", 20]
+                    });
+                }),
+                // delete phoneentry
+                container.on("click", "#delete-phonebook-link", function() {
+                    var data = $(this);
+                        var checkedValues = $("input:checkbox:checked", "#phonebook_grid").map(function() {
+                            return $(this).val();
+                        }).get(); delete checkedValues['on'];
+                        $.each(checkedValues, function(i, id) {
+                                var entry = {};
+                                entry.id = encodeURIComponent(id);
+                                self.phonebookDelete(entry, function(data) {
+                                });
+                        });
+                        if(checkedValues.length > 0) {
+                            self.render();
+                            toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.deleteSuccess ))
+                        }
+                }),
                 // add phoneentry
                 container.on("click", "#add-phonebook-link", function() {
                     var data = $(this),
@@ -35,17 +67,15 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                         }));
                     detail.find("#cancel").on("click", function() {
                         edit.dialog("close").remove()
+
                     }), detail.find("#book-detail-add").on("click", function() {
                         var formData = monster.ui.getFormData('phonebook_detail_dialog');
+//                        formData.metadata.id = encodeURIComponent(formData.metadata.id);
                         self.phonebookAdd(formData.metadata, function(data) {
+                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.addSuccess + data.id ));
                                 self.render();
-                                popup.dialog('close').remove();
-                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.toastr.addSuccess + data.id ));
+                                edit.dialog('close').remove();
                         });
-                        var popup = monster.ui.dialog(addphonebookTemplate, {
-                                title: self.i18n.active().phonebook.dialograte.addTitle
-                        });
-                        edit.dialog("close").remove()
                     });
                     flags.populateDropdown(detail.find('#metadata_country'), 'inherit', {inherit: ''});
                     detail.find('#metadata_country').chosenImage({ search_contains: true, width: '220px' });
@@ -64,16 +94,24 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                         }));
                     detail.find("#cancel").on("click", function() {
                         edit.dialog("close").remove()
+
                     }), detail.find("#book-detail-delete").on("click", function() {
-                        edit.dialog("close").remove()
+                        var formData = monster.ui.getFormData('phonebook_detail_dialog');
+                        formData.metadata.id = encodeURIComponent(formData.metadata.id);
+                        self.phonebookDelete(formData.metadata, function(data) {
+                                self.render();
+                                edit.dialog('close').remove();
+                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.deleteSuccess + data.id ));
+                        });
+
                     }), detail.find("#book-detail-update").on("click", function() {
                         var formData = monster.ui.getFormData('phonebook_detail_dialog');
-                        self.phonebookUpdate(formData.metadata.id, formData.metadata, function(data) {
+                        formData.metadata.id = encodeURIComponent(formData.metadata.id);
+                        self.phonebookUpdate(formData.metadata, function(data) {
                                 self.render();
-                                popup.dialog('close').remove();
-                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.toastr.addSuccess + data.id ));
+                                edit.dialog('close').remove();
+                                toastr.success(monster.template(self, '!' + self.i18n.active().phonebook.addSuccess + data.id ));
                         });
-                        edit.dialog("close").remove()
                     });
                     flags.populateDropdown(detail.find('#metadata_country'), self.appFlags.tableData[row][1]||'inherit', {inherit: ''});
                     detail.find('#metadata_country').chosenImage({ search_contains: true, width: '220px' });
@@ -81,7 +119,28 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                         title: self.i18n.active().phonebook.detailDialog.popupTitle,
                         position: ["center", 20]
                     });
-                })
+                }),
+                // quickcall
+                container.on("click", ".link-quickcall", function() {
+                    var data = $(this),
+                        number = data.context.dataset.row;
+                        cnumber = encodeURIComponent(number);
+                        var deviceId = $("#device_quickcall", container).val();
+                        deviceId && deviceId.length === 32 ? self.callApi({
+                            resource: "device.quickcall",
+                            data: {
+                                accountId: monster.apps.auth.originalAccount.id,
+                                deviceId: deviceId,
+                                number: cnumber
+                            },
+                            success: function(template) {var startcall =  new Date().getTime(); toastr.info(self.i18n.active().phonebook.quickcall_startedto + number, '', {"timeOut": 35000});
+                                var stopcall =  new Date().getTime();
+                                var difftime = (stopcall*1) - (startcall*1);
+//                                if(difftime < 35000)
+//                                        toastr.error(self.i18n.active().phonebook.quickcall_startedto + number, '', {"timeOut": 3000})
+                            }
+                        }) : toastr.error(self.i18n.active().phonebook.you_need_to_select_a_registered_device, '', {"timeOut": 3000})
+                });
             },
             phonebookInitTable: function(template, func) {
                 var self = this,
@@ -91,8 +150,7 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                         sWidth: "40px",
                         bSortable: !1,
                         fnRender: function(data) {
-//                            var no = data.aData[1];
-                            return '<input type="checkbox" class="select-checkbox" book_uri="' + data.iDataRow + '"/>'
+                            return '<input type="checkbox" class="select-checkbox" value="' + data.aData[7] + '"/>'
                         }
                     }, {
                         sTitle: self.i18n.active().phonebook.tableTitles.country,
@@ -111,7 +169,7 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                         sTitle: self.i18n.active().phonebook.tableTitles.details,
                         bSortable: false,
                         fnRender: function(data) {
-                            return '<a href="#" class="detail-link monster-link blue" data-row="' + data.iDataRow +'"><i class="fa fa-eye"></i></a>'+
+                            return '<a href="#" class="detail-link monster-link blue" data-row="' + data.iDataRow +'"><i class="fa fa-edit"></i></a>'+
                                     '<a href="#" class="link-quickcall user_quickcalldevice monster-link blue" data-row="' + data.aData[7] +'"><i class="fa fa-phone"></i></a>'
                         }
                     }, {
@@ -136,38 +194,15 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                 $("div.actions_phonebook", template).html('<button id="renew-phonebook-link" class="monster-button monster-button-primary" data-action="renew">' +
                 self.i18n.active().phonebook.renew + '</button><button id="add-phonebook-link" class="monster-button monster-button-success" data-action="addd">' +
                 self.i18n.active().phonebook.add +  '</button><button id="delete-phonebook-link" class="monster-button monster-button-danger" data-action="deleted">' +
-                self.i18n.active().phonebook.delete + '</button><button type="button" class="monster-button monster-button-success upload-action upload-submit" data-action="upload">'+
-                '<i class="fa fa-upload"></i></button>'),
+                self.i18n.active().phonebook.delete + '</button><button id="upload-link" type="button" class="monster-button monster-button-success upload-action'+
+                ' upload-submit"><i class="fa fa-upload"></i></button>'),
+
+                $('.link-quickcall').css('cursor', 'hand');
 
                 $('#select_all_bookentrys').click(function (e) {
                     $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
                 });
-
-//                $(".select_all_bookentrys", template).change(function() {
-//                    $(".select-checkbox", template).prop("checked", $(this).is(":checked"))
-//                })
-                $(template).delegate(".link-upload", "click", function() {
-
-                }),
-                $(template).delegate(".link-quickcall", "click", function() {
-                        var m = $("#device_quickcall", template).val(),
-                        number = $(this).data("number");
-                        deviceId && m.length === 32 ? self.callApi({
-                            resource: "device.quickcall",
-                            data: {
-                                accountId: self.accountId,
-                                deviceId: deviceId,
-                                number: number
-                            },
-                            success: function(template) {var startcall =  new Date().getTime(); toastr.info(self.i18n.active().phonebook.quickcall_startedto + s, '', {"timeOut": 35000});
-                                var stopcall =  new Date().getTime();
-                                var difftime = (stopcall*1) - (startcall*1);
-//                                if(difftime < 35000)
-//                                        toastr.error(self.i18n.active().phonebook.quickcall_startedto + s, '', {"timeOut": 3000})
-                            }
-                        }) : toastr.error(self.i18n.active().phonebook.you_need_to_select_a_registered_device, '', {"timeOut": 3000})
-                });
-                });
+            })
             },
             phonebookFormatDataTable: function(data) {
                 var ret = [];
@@ -202,13 +237,12 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                     });
             },
 
-            phonebookUpdate: function(phonebookId, data, callback){
+            phonebookUpdate: function(data, callback){
                     var self = this;
                     self.callApi({
                             resource: 'phonebook.update',
                             data: {
                                     accountId: self.accountId,
-                                    rateId: phonebookId,
                                     data: data
                             },
                             success: function(data) {
@@ -217,14 +251,15 @@ define(["require", "jquery", "underscore", "monster", "toastr", "monster-flags",
                     });
             },
 
-            phonebookDelete: function(phonebookId, callback){
+            phonebookDelete: function(data, callback){
                     var self = this;
                     self.callApi({
                             resource: 'phonebook.delete',
                             data: {
                                     accountId: self.accountId,
-                                    rateId: phonebookId,
+                                    phonebookId: data.id,
                                     data: {}
+
                             },
                             success: function(data) {
                                     callback && callback(data.data);

@@ -1,0 +1,16 @@
+#speed_dial_container .table .detail-link {
+	margin: 0px;
+}
+#speed_dial_grid {
+	clear: right;
+}
+#speed_dial_detail_dialog {
+	width: 500px;
+	padding: 15px;
+}
+#speed_dial_detail_dialog tr,
+#speed_dial_detail_dialog td {
+	line-height: 15px;
+	padding: 2px;
+	white-space: normal;
+}
